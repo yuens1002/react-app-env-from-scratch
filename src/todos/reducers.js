@@ -1,4 +1,8 @@
-import { CREATE_TODO, REMOVE_TODO, COMPLETE_TODO } from './actions';
+import {
+  CREATE_TODO,
+  REMOVE_TODO,
+  TOGGLE_COMPLETED,
+} from './actions';
 
 export const todos = (state = [], action) => {
   const { type, payload } = action;
@@ -15,9 +19,16 @@ export const todos = (state = [], action) => {
       const { text } = payload;
       return state.filter((todo) => todo.text != text);
     }
-    case COMPLETE_TODO: {
+    case TOGGLE_COMPLETED: {
       const { text } = payload;
-      return state.filter((todo) => todo.text != text);
+      return state.reduce((todos, todo) => {
+        const newTodo = { ...todo };
+        if (newTodo.text === text) {
+          newTodo.isCompleted = !newTodo.isCompleted;
+        }
+
+        return todos.push(newTodo), todos;
+      }, []);
     }
     default:
       return state;

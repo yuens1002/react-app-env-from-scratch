@@ -27,6 +27,10 @@ button {
     background-color: #22ee22;
 }
 
+.completed-text {
+    text-decoration: line-through;
+}
+
 .remove-button {
     display: inline-block;
     background-color: #ee2222;
