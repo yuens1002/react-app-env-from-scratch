@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { createTodo } from './actions';
+import React from 'react';
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { createTodo } from './todosSlice';
 import './NewTodoForm.css';
 
-const NewTodoForm = ({ todos, onCreatePressed }) => {
-  console.log('todos: ', todos);
+export function NewTodoForm() {
+  const todos = useSelector((state) => state.todos);
+  const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
 
   return (
@@ -19,13 +21,13 @@ const NewTodoForm = ({ todos, onCreatePressed }) => {
       <button
         className="new-todo-button"
         onClick={() => {
-          const isDuplicateText = todos.some((todo) => {
-            todo.text === inputValue;
-          });
+          const isDuplicateText = todos.some(
+            ({ todo }) => todo === inputValue
+          );
           if (isDuplicateText) {
             setInputValue('todo already exists');
           } else {
-            onCreatePressed(inputValue);
+            dispatch(createTodo(inputValue));
             setInputValue('');
           }
         }}
@@ -34,16 +36,4 @@ const NewTodoForm = ({ todos, onCreatePressed }) => {
       </button>
     </div>
   );
-};
-
-const mapStateToProps = (state) => ({
-  todos: state.todos,
-});
-const mapDispatchToProps = (dispatch) => ({
-  onCreatePressed: (text) => dispatch(createTodo(text)),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NewTodoForm);
+}

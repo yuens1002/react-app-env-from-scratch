@@ -1,31 +1,44 @@
 import React from 'react';
-import NewTodoForm from './NewTodoForm';
-import TodoListItem from './TodoListItem';
-import { connect } from 'react-redux';
-import { removeTodo, toggleCompleted } from './actions';
+import { NewTodoForm } from './NewTodoForm';
+import { TodoListItem } from './TodoListItem';
+import { useSelector, useDispatch } from 'react-redux';
+import { useGetTodosQuery } from '../service/apiSlice';
+import { removeTodo, toggleTodoCompleted } from './todosSlice';
 import './TodoList.css';
 
-const TodoList = ({ todos, onRemovePressed, onToggleCompleted }) => (
-  <div className="list-wrapper">
-    <NewTodoForm />
-    {todos.map((todo) => (
-      <TodoListItem
-        key={todo.text}
-        todo={todo}
-        onRemovedPressed={onRemovePressed}
-        onToggleCompleted={onToggleCompleted}
-      />
-    ))}
-  </div>
-);
+export function TodoList() {
+  const dispatch = useDispatch();
 
-const mapStateToProps = (state) => ({
-  todos: state.todos,
-});
+  const {
+    data: todos,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetTodosQuery();
+  let content;
 
-const mapDispatchToProps = (dispatch) => ({
-  onRemovePressed: (text) => dispatch(removeTodo(text)),
-  onToggleCompleted: (text) => dispatch(toggleCompleted(text)),
-});
+  if (isLoading) {
+    content = <div>loading...</div>;
+  } else if (isSuccess) {
+    content = (
+      <>
+        <NewTodoForm />
+        {todos.todos.map((todo) => (
+          <TodoListItem
+            key={todo.id}
+            todo={todo}
+            onRemovedPressed={() => dispatch(removeTodo(todo.todo))}
+            onToggleCompleted={() =>
+              dispatch(toggleTodoCompleted(todo.todo))
+            }
+          />
+        ))}
+      </>
+    );
+  } else if (isError) {
+    content = <div>{error.toString()}</div>;
+  }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
+  return <div className="list-wrapper">{content}</div>;
+}
