@@ -1,13 +1,31 @@
 import React from 'react';
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { createTodo } from './todosSlice';
 import './NewTodoForm.css';
+import { useAddNewTodoMutation } from '../service/apiSlice';
 
-export function NewTodoForm() {
-  const todos = useSelector((state) => state.todos);
-  const dispatch = useDispatch();
+export function NewTodoForm({ todos = [] }) {
   const [inputValue, setInputValue] = useState('');
+  const [addNewTodo] = useAddNewTodoMutation();
+
+  const onNewTodoClicked = async () => {
+    const isDuplicateText = todos.todos.some(
+      ({ todo }) => todo === inputValue
+    );
+    if (isDuplicateText) {
+      setInputValue('todo already exists');
+    } else {
+      try {
+        await addNewTodo({
+          todo: inputValue,
+          completed: false,
+          userId: 5,
+        }).unwrap();
+        setInputValue('');
+      } catch (err) {
+        console.error('Failed to save the post: ', err);
+      }
+    }
+  };
 
   return (
     <div className="new-todo-form">
@@ -18,20 +36,7 @@ export function NewTodoForm() {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
       />
-      <button
-        className="new-todo-button"
-        onClick={() => {
-          const isDuplicateText = todos.some(
-            ({ todo }) => todo === inputValue
-          );
-          if (isDuplicateText) {
-            setInputValue('todo already exists');
-          } else {
-            dispatch(createTodo(inputValue));
-            setInputValue('');
-          }
-        }}
-      >
+      <button className="new-todo-button" onClick={onNewTodoClicked}>
         Create Todo
       </button>
     </div>

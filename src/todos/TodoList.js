@@ -1,14 +1,10 @@
 import React from 'react';
 import { NewTodoForm } from './NewTodoForm';
 import { TodoListItem } from './TodoListItem';
-import { useSelector, useDispatch } from 'react-redux';
 import { useGetTodosQuery } from '../service/apiSlice';
-import { removeTodo, toggleTodoCompleted } from './todosSlice';
 import './TodoList.css';
 
 export function TodoList() {
-  const dispatch = useDispatch();
-
   const {
     data: todos,
     isLoading,
@@ -23,16 +19,9 @@ export function TodoList() {
   } else if (isSuccess) {
     content = (
       <>
-        <NewTodoForm />
+        <NewTodoForm todos={todos} />
         {todos.todos.map((todo) => (
-          <TodoListItem
-            key={todo.id}
-            todo={todo}
-            onRemovedPressed={() => dispatch(removeTodo(todo.todo))}
-            onToggleCompleted={() =>
-              dispatch(toggleTodoCompleted(todo.todo))
-            }
-          />
+          <TodoListItem key={todo.id} todo={todo} />
         ))}
       </>
     );
