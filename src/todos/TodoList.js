@@ -8,7 +8,7 @@ import './TodoList.css';
 
 export function TodoList() {
   const [currentPage, setCurrentPage] = useState(1);
-  const pageLimit = 10;
+  const pageLimit = 5;
   const {
     data: todos,
     isLoading,

@@ -3,8 +3,6 @@ import {
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react';
 
-const pageLimit = 10;
-
 // Define a service using a base URL and expected endpoints
 export const apiSlice = createApi({
   reducerPath: 'todosApi',
