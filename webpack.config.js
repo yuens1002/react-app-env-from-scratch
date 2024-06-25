@@ -8,7 +8,7 @@ module.exports = {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: /(n0de_modules)/,
+        exclude: /(node_modules)/,
         loader: 'babel-loader',
         options: { presets: ['@babel/env'] },
       },
@@ -30,7 +30,5 @@ module.exports = {
       publicPath: '/dist/',
     },
     port: 3000,
-    hot: 'only',
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()],
 };
