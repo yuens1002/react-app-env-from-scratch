@@ -4,13 +4,16 @@ import { NewTodoForm } from './NewTodoForm';
 import { TodoPagination } from './TodoPagination';
 import { TodoListItem } from './TodoListItem';
 import { TodoFilter } from './TodoFilter';
+import { SortTodoDropdown } from './SortTodoDropdown';
 import { useGetTodosQuery } from '../service/apiSlice';
 import './TodoList.css';
+import { sortTodos, filterTodos } from '../utilities/computeTodos';
 
 export function TodoList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedFilter, setSelectedFilter] = useState('all');
-  const pageLimit = 5;
+  const [sortOrder, setSortOrder] = useState('a-z');
+  const pageLimit = 7;
   const {
     data: todos,
     isLoading,
@@ -21,13 +24,6 @@ export function TodoList() {
     limit: pageLimit,
     skip: (currentPage - 1) * pageLimit,
   });
-
-  function filterTodos(todos, selected) {
-    if (selected === 'all') return todos;
-    if (selected === 'completed') {
-      return todos.filter((todo) => todo.completed === true);
-    } else return todos.filter((todo) => todo.completed === false);
-  }
 
   let content;
 
@@ -41,6 +37,7 @@ export function TodoList() {
           <TodoFilter
             filter={{ selectedFilter, setSelectedFilter }}
           />
+          <SortTodoDropdown sorter={{ sortOrder, setSortOrder }} />
           <TodoPagination
             pageInfo={{
               currentPage,
@@ -49,7 +46,10 @@ export function TodoList() {
             }}
           />
         </div>
-        {filterTodos(todos.todos, selectedFilter).map((todo) => (
+        {filterTodos(
+          sortTodos(todos.todos, sortOrder),
+          selectedFilter
+        ).map((todo) => (
           <TodoListItem key={todo.id} todo={todo} />
         ))}
       </>

@@ -4,7 +4,7 @@
 
 - the result(s) can however be seen in the Redux browser extension in the action tab.
 
-- looking to add the following features:
+- implemented the following features:
   - [x] pagination
-  - [ ] sorting
+  - [x] sorting
   - [x] filtering to show only completed or incomplete todos
