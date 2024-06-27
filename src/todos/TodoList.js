@@ -3,11 +3,13 @@ import { useState } from 'react';
 import { NewTodoForm } from './NewTodoForm';
 import { TodoPagination } from './TodoPagination';
 import { TodoListItem } from './TodoListItem';
+import { TodoFilter } from './TodoFilter';
 import { useGetTodosQuery } from '../service/apiSlice';
 import './TodoList.css';
 
 export function TodoList() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedFilter, setSelectedFilter] = useState('all');
   const pageLimit = 5;
   const {
     data: todos,
@@ -20,6 +22,13 @@ export function TodoList() {
     skip: (currentPage - 1) * pageLimit,
   });
 
+  function filterTodos(todos, selected) {
+    if (selected === 'all') return todos;
+    if (selected === 'completed') {
+      return todos.filter((todo) => todo.completed === true);
+    } else return todos.filter((todo) => todo.completed === false);
+  }
+
   let content;
 
   if (isLoading) {
@@ -28,14 +37,19 @@ export function TodoList() {
     content = (
       <>
         <NewTodoForm todos={todos} />
-        <TodoPagination
-          pageInfo={{
-            currentPage,
-            totalPages: Math.ceil(todos.total / pageLimit),
-            setCurrentPage,
-          }}
-        />
-        {todos.todos.map((todo) => (
+        <div className="controls-container">
+          <TodoFilter
+            filter={{ selectedFilter, setSelectedFilter }}
+          />
+          <TodoPagination
+            pageInfo={{
+              currentPage,
+              setCurrentPage,
+              totalPages: Math.ceil(todos.total / pageLimit),
+            }}
+          />
+        </div>
+        {filterTodos(todos.todos, selectedFilter).map((todo) => (
           <TodoListItem key={todo.id} todo={todo} />
         ))}
       </>

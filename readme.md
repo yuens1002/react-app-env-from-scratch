@@ -7,4 +7,4 @@
 - looking to add the following features:
   - [x] pagination
   - [ ] sorting
-  - [ ] filtering to show only completed or incomplete todos
+  - [x] filtering to show only completed or incomplete todos

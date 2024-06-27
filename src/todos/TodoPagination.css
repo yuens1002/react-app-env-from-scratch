@@ -1,20 +1,19 @@
 .pagination-container {
   display: flex;
   justify-content: flex-end;
-  padding-top: 2rem;
-  padding-bottom: 1rem;
+  align-items: center;
 }
 
 .pagination-item {
-  padding-right: 3rem;
+  padding-left: 1rem;
 }
 
 .pagination-button {
   display: inline-block;
   font-size: 16px;
-  padding: 8px;
   border: none;
   border-radius: 8px;
+  padding: 8px;
   outline: none;
   cursor: pointer;
   background-color: #EAEAEA;
