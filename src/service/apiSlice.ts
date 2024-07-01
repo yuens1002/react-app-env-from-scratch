@@ -2,6 +2,8 @@ import {
   createApi,
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react';
+import type { TodosSchema as TodosResponse } from '../lib/schema';
+import { zTodosObject } from '../lib/schema';
 
 // Define a service using a base URL and expected endpoints
 export const apiSlice = createApi({
@@ -12,9 +14,14 @@ export const apiSlice = createApi({
   // tags allows RTK Query to auto refetch/refresh the UI from server
   tagTypes: ['Todo'],
   endpoints: (builder) => ({
-    getTodos: builder.query({
-      query: ({ limit, skip }) => {
-        return `/?limit=${limit}&skip=${skip}`;
+    getTodos: builder.query<
+      TodosResponse,
+      { limit: number; skip: number }
+    >({
+      query: ({ limit, skip }) => `/?limit=${limit}&skip=${skip}`,
+      transformResponse: (response: TodosResponse) => {
+        zTodosObject.parse(response);
+        return response;
       },
       providesTags: ['Todo'],
     }),
@@ -46,11 +53,3 @@ export const apiSlice = createApi({
     }),
   }),
 });
-
-// Export the auto-generated hook for the `getPosts` query endpoint
-export const {
-  useGetTodosQuery,
-  useAddNewTodoMutation,
-  useUpdateTodoStatusMutation,
-  useDeleteTodoMutation,
-} = apiSlice;

@@ -1,17 +1,17 @@
-import React from 'react';
-import { useState } from 'react';
 import './TodoPagination.css';
 
-export function TodoPagination({ pageInfo }) {
-  const {
-    totalPages,
-    currentPage,
-    setCurrentPage,
-    selectedFilter,
-    setSelectedFilter,
-  } = pageInfo;
+type TodoPaginationProps = {
+  pageInfo: {
+    totalPages: number;
+    currentPage: number;
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  };
+};
 
-  function onFilterSelection(e) {}
+export default function TodoPagination({
+  pageInfo,
+}: TodoPaginationProps) {
+  const { totalPages, currentPage, setCurrentPage } = pageInfo;
 
   return (
     <div className="pagination-container">

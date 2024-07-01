@@ -1,13 +1,14 @@
-import React from 'react';
 import './TodoListItem.css';
-import {
-  useUpdateTodoStatusMutation,
-  useDeleteTodoMutation,
-} from '../service/apiSlice';
+import { apiSlice } from '../service/apiSlice';
+import type { Todo } from '../lib/types';
 
-export function TodoListItem({ todo }) {
-  const [updateTodoStatus] = useUpdateTodoStatusMutation();
-  const [deleteTodo] = useDeleteTodoMutation();
+type TodoListItemProps = {
+  todo: Todo;
+};
+
+export default function TodoListItem({ todo }: TodoListItemProps) {
+  const [updateTodoStatus] = apiSlice.useUpdateTodoStatusMutation();
+  const [deleteTodo] = apiSlice.useDeleteTodoMutation();
 
   const onCompletedClicked = async () => {
     try {
@@ -32,7 +33,7 @@ export function TodoListItem({ todo }) {
 
   return (
     <div className="todo-item-container">
-      <h3 className={todo.completed ? 'completed-text' : null}>
+      <h3 className={todo.completed ? 'completed-text' : undefined}>
         {todo.todo}
       </h3>
       <div className="buttons-container">

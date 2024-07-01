@@ -1,14 +1,18 @@
-import React from 'react';
 import { useState } from 'react';
 import './NewTodoForm.css';
-import { useAddNewTodoMutation } from '../service/apiSlice';
+import { apiSlice } from '../service/apiSlice';
+import type { Todo } from '../lib/types';
 
-export function NewTodoForm({ todos = [] }) {
+type TodosProps = {
+  todos: Todo[];
+};
+
+export default function NewTodoForm({ todos }: TodosProps) {
   const [inputValue, setInputValue] = useState('');
-  const [addNewTodo] = useAddNewTodoMutation();
+  const [addNewTodo] = apiSlice.useAddNewTodoMutation();
 
   const onNewTodoClicked = async () => {
-    const isDuplicateText = todos.todos.some(
+    const isDuplicateText = todos?.some(
       ({ todo }) => todo === inputValue
     );
     if (isDuplicateText) {

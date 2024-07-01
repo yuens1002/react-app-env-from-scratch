@@ -1,4 +1,6 @@
-export function sortTodos(todos, sortOrder) {
+import type { Todo } from '../lib/types';
+
+export function sortTodos(todos: Todo[], sortOrder: string) {
   if (sortOrder === 'a-z') {
     return todos.toSorted((a, b) =>
       ('' + a.todo).localeCompare(b.todo)
@@ -9,9 +11,10 @@ export function sortTodos(todos, sortOrder) {
       ('' + b.todo).localeCompare(a.todo)
     );
   }
+  return todos;
 }
 
-export function filterTodos(todos, selected) {
+export function filterTodos(todos: Todo[], selected: string) {
   if (selected === 'all') return todos;
   if (selected === 'completed') {
     return todos.filter((todo) => todo.completed === true);

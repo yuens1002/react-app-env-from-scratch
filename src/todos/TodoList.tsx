@@ -1,17 +1,20 @@
-import React from 'react';
 import { useState } from 'react';
-import { NewTodoForm } from './NewTodoForm';
-import { TodoPagination } from './TodoPagination';
-import { TodoListItem } from './TodoListItem';
-import { TodoFilter } from './TodoFilter';
-import { SortTodoDropdown } from './SortTodoDropdown';
-import { useGetTodosQuery } from '../service/apiSlice';
-import './TodoList.css';
-import { sortTodos, filterTodos } from '../utilities/computeTodos';
+import NewTodoForm from './NewTodoForm';
+import TodoPagination from './TodoPagination';
+import TodoListItem from './TodoListItem';
+import TodoFilter from './TodoFilter';
+import SortTodoDropdown from './SortTodoDropdown';
+import { apiSlice } from '../service/apiSlice';
 
-export function TodoList() {
+import { sortTodos, filterTodos } from '../utilities/computeTodos';
+import type { Completed } from '../lib/types';
+
+import './TodoList.css';
+
+export default function TodoList() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedFilter, setSelectedFilter] = useState('all');
+  const [selectedFilter, setSelectedFilter] =
+    useState<Completed>('all');
   const [sortOrder, setSortOrder] = useState('a-z');
   const pageLimit = 7;
   const {
@@ -20,7 +23,7 @@ export function TodoList() {
     isSuccess,
     isError,
     error,
-  } = useGetTodosQuery({
+  } = apiSlice.useGetTodosQuery({
     limit: pageLimit,
     skip: (currentPage - 1) * pageLimit,
   });
@@ -32,7 +35,7 @@ export function TodoList() {
   } else if (isSuccess) {
     content = (
       <>
-        <NewTodoForm todos={todos} />
+        <NewTodoForm todos={todos.todos} />
         <div className="controls-container">
           <TodoFilter
             filter={{ selectedFilter, setSelectedFilter }}

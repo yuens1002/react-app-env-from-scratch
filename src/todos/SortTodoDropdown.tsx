@@ -1,6 +1,13 @@
-import React from 'react';
+type SortTodoDropdownProps = {
+  sorter: {
+    sortOrder: string;
+    setSortOrder: React.Dispatch<React.SetStateAction<string>>;
+  };
+};
 
-export function SortTodoDropdown({ sorter }) {
+export default function SortTodoDropdown({
+  sorter,
+}: SortTodoDropdownProps) {
   const { sortOrder, setSortOrder } = sorter;
   return (
     <div>
