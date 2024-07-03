@@ -7,6 +7,7 @@
 - the result(s) can however be seen in the Redux browser extension in the action tab.
 
 - implemented the following features:
-  - [x] pagination
-  - [x] sorting
-  - [x] filtering to show only completed or incomplete todos
+  - [x] select number of todos to show per page
+  - [x] allow for pagination
+  - [x] sort by a-z or z-a
+  - [x] filter todos to show all, completed or incomplete todos

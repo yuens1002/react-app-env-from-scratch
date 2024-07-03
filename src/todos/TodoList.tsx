@@ -16,7 +16,7 @@ export default function TodoList() {
   const [selectedFilter, setSelectedFilter] =
     useState<Completed>('all');
   const [sortOrder, setSortOrder] = useState('a-z');
-  const pageLimit = 7;
+  const [pageLimit, setPageLimit] = useState(5);
   const {
     data: todos,
     isLoading,
@@ -45,7 +45,9 @@ export default function TodoList() {
             pageInfo={{
               currentPage,
               setCurrentPage,
-              totalPages: Math.ceil(todos.total / pageLimit),
+              pageLimit,
+              setPageLimit,
+              totalTodos: todos.total,
             }}
           />
         </div>

@@ -2,8 +2,10 @@ import './TodoPagination.css';
 
 type TodoPaginationProps = {
   pageInfo: {
-    totalPages: number;
+    totalTodos: number;
     currentPage: number;
+    pageLimit: number;
+    setPageLimit: React.Dispatch<React.SetStateAction<number>>;
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
   };
 };
@@ -11,10 +13,38 @@ type TodoPaginationProps = {
 export default function TodoPagination({
   pageInfo,
 }: TodoPaginationProps) {
-  const { totalPages, currentPage, setCurrentPage } = pageInfo;
+  const {
+    totalTodos,
+    currentPage,
+    setCurrentPage,
+    pageLimit,
+    setPageLimit,
+  } = pageInfo;
+
+  const totalPages = Math.ceil(totalTodos / pageLimit);
+
+  function onSelectedPageLimit(
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) {
+    const selectedPageLimit = Number(e.target.value);
+    setPageLimit(selectedPageLimit);
+  }
 
   return (
     <div className="pagination-container">
+      <div className="pagination-item">
+        <label htmlFor="todos per page">Todos per page: </label>
+        <select
+          name="todos per page"
+          id="todos per page"
+          value={pageLimit}
+          onChange={onSelectedPageLimit}
+        >
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+        </select>
+      </div>
       <div className="pagination-item">
         <button
           disabled={currentPage === 1}
